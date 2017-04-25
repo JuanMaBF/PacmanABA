@@ -2286,12 +2286,12 @@ function Energiser() {
     this.h = Energiser.SIZE;
 }
 
-Energiser.SIZE = TILE_SIZE * 0.75;
+Energiser.SIZE = TILE_SIZE * 1.75;
 Energiser.COLOUR = '#FFB6AD';
 Energiser.BLINK_DURATION = toTicks(0.15);
 
 Energiser.prototype = new Dot({
-
+    //Vivaperoncarajosfd
     onRespawn: function () {
         this.setVisible(true);
         this.cancelEvent(this._blinker);
@@ -2301,8 +2301,18 @@ Energiser.prototype = new Dot({
     }
 });
 
+function imagenCrear() {
+    var sprite = new GraphicsBuffer(10, 10);
+    var g = sprite.getContext('2d');
+    var spritesheet=new Image();
+    spritesheet.src="pacman/res/logo-aba.png"
+    //ctx.drawImage(spritesheet,10,10);
+    return spritesheet;
+};
+
 enqueueInitialiser(function () {
-    Energiser.prototype.sprite = Dot.createSprite(Energiser.SIZE, Energiser.COLOUR);
+    //Energiser.prototype.sprite = Dot.createSprite(Energiser.SIZE, Energiser.COLOUR);
+    Energiser.prototype.sprite = imagenCrear(Energiser.SIZE, Energiser.COLOUR);
 });
 /*
  * The group that manages dots and energisers for performance reasons.

@@ -3003,7 +3003,7 @@ $(function () {
     }
 
     ResourceManager.load({
-        base: 'res',
+        base: 'pacman/res',
         images: ['bg', 'bg-flash', 'blinky', 'pinky', 'inky',
                  'clyde', 'frightened', 'flashing', 'dead'],
         sounds: ['intro', 'tick0', 'tick1', 'tick2', 'tick3'],

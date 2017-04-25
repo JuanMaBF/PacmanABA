@@ -1,16 +1,9 @@
-#content {
-  max-width: 30em;
-}
-body {
-  margin: 0;
-  padding: 10px;
-  background: white;
-  font-size: 70%;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.5em;
-}
-p {
-  margin: 0 0 1em;
+.pacman-ahora {
+  background:rgba(94,34,95,.85);
+  border-radius:30px;
+  padding:8px 22px;
+  width: 448px; 
+  height: 576;
 }
 .warning {
   width: 20em;
@@ -23,6 +16,8 @@ canvas {
   border: 2px #333 solid;
   background: #CCC;
   float: left;
+  position: block;
+  margin-bottom: 40px;
 }
 #cruft {
   float: left;

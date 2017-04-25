@@ -1964,6 +1964,10 @@ LifeDisplay.prototype = new Sprite({
         this.h = gridSize;
     },
 
+    getLives: function () {
+        return this.lives;
+    },
+
     repaint: function (g) {
         g.save();
 
@@ -2665,6 +2669,7 @@ function respawn(starting) {
         });
         resources.playSound('intro');
     } else {
+
         start();
     }
 }
@@ -2775,12 +2780,20 @@ function processGhostCollisions(pacman, ghosts) {
 
 function lifeLost() {
     if (--lives) {
+        console.log(lives);
         respawn();
     } else {
         // game over
+        lives = 3;
         var prevBest = getPref('highscore') || 0;
         setPref('highscore', Math.max(prevBest, highscore));
         mode = MODE_FINISHED;
+        debug('starting level %s', level);
+        insertObject('dots', new DotGroup());
+        insertObject('dotCounter', new DotCounter(level));
+        insertObject('bonusDisplay', new BonusDisplay(level));
+
+        respawn(true);
     }
 }
 
@@ -2981,7 +2994,6 @@ $(function () {
     }
 
     function init() {
-        // check for previous sound preference
         var soundsEnabled = getPref('sound.enabled') !== 'false';
         resources.enableSounds(soundsEnabled);
 

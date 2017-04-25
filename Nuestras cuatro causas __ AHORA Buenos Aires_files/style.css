@@ -3,8 +3,6 @@
 
 .pacman-canvas {
     float: left;
-    width: 548; 
-    height: 676;
     border: 20px rgba(94,34,95,.85) solid;
     border-radius: 12px;
     background: #CCC;

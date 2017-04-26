@@ -930,7 +930,7 @@ function Header() {
         y: 0
     })));
     this.add(new Text(merge(props, {
-        txt: 'PUNTAJE',
+        txt: 'AHORA Buenos Aires',
         x: 9 * TILE_SIZE,
         y: 0
     })));
@@ -1092,35 +1092,35 @@ Maze.LAYOUT = ['############################',
                '############################',
                '############################',
                '############################',
-               '#............##............#',
+               '#. . . . . . ##. . . . . . #',
                '#.####.#####.##.#####.####.#',
-               '#o####.#####.##.#####.####o#',
+               '#o#### ##### ## ##### ####o#',
                '#.####.#####.##.#####.####.#',
-               '#..........................#',
+               '#. . . . . . . . . . . . . #',
                '#.####.##.########.##.####.#',
                '#.####.##.########.##.####.#',
-               '#......##....##....##......#',
+               '#. . . ##. . ##. . ##. . . #',
                '######.##### ## #####.######',
-               '######.##### ## #####.######',
+               '###### ##### ## ##### ######',
                '######.##          ##.######',
-               '######.## ######## ##.######',
+               '###### ## ######## ## ######',
                '######.## ######## ##.######',
                '      .   ########   .      ',
+               '###### ## ######## ## ######',
                '######.## ######## ##.######',
+               '###### ##          ## ######',
                '######.## ######## ##.######',
-               '######.##          ##.######',
-               '######.## ######## ##.######',
-               '######.## ######## ##.######',
-               '#............##............#',
+               '###### ## ######## ## ######',
+               '#. . . . . . ##. . . . . . #',
                '#.####.#####.##.#####.####.#',
-               '#.####.#####.##.#####.####.#',
-               '#o..##.......  .......##..o#',
+               '# #### ##### ## ##### #### #',
+               '#o. ##. . . .  . . . .## .o#',
                '###.##.##.########.##.##.###',
-               '###.##.##.########.##.##.###',
-               '#......##....##....##......#',
+               '### ## ## ######## ## ## ###',
+               '#. . . ##. . ##. . ##. . . #',
                '#.##########.##.##########.#',
                '#.##########.##.##########.#',
-               '#..........................#',
+               '#. . . . . . . . . . . . . #',
                '############################',
                '############################',
                '############################'];
@@ -1799,7 +1799,7 @@ Pacman.draw = function (g, x, y, radius, startAngle, proportion, offsetHinge) {
     g.arc(x, y, radius, start + angle, start + (angle === 0 ? 2 * Math.PI : -angle), false);
     g.moveTo(x + xOffset, y + yOffset);
     g.closePath();
-    g.fillStyle = 'yellow';
+    g.fillStyle = '#86C555';
     g.fill();
     g.restore();
 };
@@ -2167,16 +2167,29 @@ DotCounter.prototype = {
 function Bonus(symbol, value) {
     // FIXME: do something with symbol
     this.symbol = symbol;
-    this.w = this.h = TILE_SIZE;
+    this.w = this.h = 30;
     this.value = value;
 }
+
+function imagenCrear() {
+    var sprite = new GraphicsBuffer(10, 10);
+    var g = sprite.getContext('2d');
+    var spritesheet=new Image();
+    spritesheet.src="pacman/res/logo-aba.png"
+    //ctx.drawImage(spritesheet,10,10);
+    return spritesheet;
+};
 
 Bonus.prototype = new Sprite({
 
     repaint: function (g) {
-        // FIXME
+        
+
         g.save();
-        g.fillStyle = 'white';
+        var spritesheet=new Image();
+        spritesheet.src="pacman/res/logo-aba.png"
+        var pat=ctx.createPattern(spritesheet,"repeat");
+        g.fillStyle = pat;
         g.fillRect(this.x, this.y, this.w, this.h);
         g.restore();
     },
@@ -2256,22 +2269,35 @@ Dot.createSprite = function (size, colour) {
     return sprite;
 };
 
+
+
+
 Dot.prototype = new Sprite({
 
     place: function (col, row) {
         this.centreAt(col * TILE_SIZE + TILE_SIZE / 2,
                       row * TILE_SIZE + TILE_SIZE / 2);
     },
-
     repaint: function (g) {
         g.save();
         g.drawImage(this.sprite, this.x, this.y);
         g.restore();
+    },
+    crear: function () {
+        
+        var sprite = new GraphicsBuffer(10, 10);
+        var g = sprite.getContext('2d');
+        var spritesheet=new Image();
+        spritesheet.src="pacman/res/llave.png";
+        this.setVisible(true);
+        return spritesheet;
+        //ctx.drawImage(spritesheet,10,10);
     }
 });
 
 enqueueInitialiser(function () {
-    Dot.prototype.sprite = Dot.createSprite(Dot.SIZE, Dot.COLOUR);
+    Dot.prototype.sprite = Dot.prototype.crear();
+    //Dot.prototype.sprite = Dot.createSprite(Dot.SIZE, Dot.COLOUR);
 });
 /*
  * A flashing dot that bestows ghost-eating powers.
@@ -2646,7 +2672,7 @@ function respawn(starting) {
     }
 
     insertStartupText('readyText', {
-        txt: 'ESTAS PREPARDO/A?',
+        txt: 'ESTÁS PREPARDO/A?',
         colour: 'yellow',
         x: 6 * TILE_SIZE,
         y: 20 * TILE_SIZE
@@ -2663,6 +2689,7 @@ function respawn(starting) {
         wait(starting ? 2 : 1, function () {
             removeObject('readyText');
         });
+        
     }
 
     if (starting) {
@@ -2679,7 +2706,6 @@ function respawn(starting) {
         });
         resources.playSound('intro');
     } else {
-
         start();
     }
 }
@@ -2790,7 +2816,6 @@ function processGhostCollisions(pacman, ghosts) {
 
 function lifeLost() {
     if (--lives) {
-        console.log(lives);
         respawn();
     } else {
         // game over

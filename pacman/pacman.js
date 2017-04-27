@@ -2227,7 +2227,7 @@ function BonusDisplay(level) {
     }
 }
 
-BonusDisplay.MAX_DISPLAY = 6;
+BonusDisplay.MAX_DISPLAY = 0;
 BonusDisplay.prototype = new Group();
 /*
  * An edible maze dot.
@@ -2248,22 +2248,6 @@ Dot.COLOUR = '#FCC';
 
 Dot.createSprite = function (size, colour) {
 
-    /*var sprite = new GraphicsBuffer(size, size);
-    var g = sprite.getContext('2d');
-    g.arc(100,100, 50, 0, Math.PI*2,true); // you can use any shape
-    g.clip();
-
-    var img = new Image();
-    img.addEventListener('load', function(e) {
-        ctx.drawImage(this, 0, 0, 200, 300);
-        //ctx.fill();
-    //ctx.stroke();
-    }, true);
-    img.src="/path/to/image.jpg";*/
-    
-
-    
-
     var sprite = new GraphicsBuffer(size, size);
     var g = sprite.getContext('2d');
     g.beginPath();
@@ -2275,20 +2259,11 @@ Dot.createSprite = function (size, colour) {
     spritesheet.onload = function(){
         var pattern = g.createPattern(this, "no-repeat");
         g.fillStyle = pattern;
-        console.log('fsd');
         g.fill();
         
     };
-    setTimeout(function(){}, 3000);
     return sprite;
-    /*spritesheet.src="pacman/res/llave.png"
-    var pat=ctx.createPattern(spritesheet,"repeat");
-    g.fillStyle = pat;
-    g.fill();*/
 };
-
-
-
 
 Dot.prototype = new Sprite({
 
@@ -2314,7 +2289,6 @@ Dot.prototype = new Sprite({
 });
 
 enqueueInitialiser(function () {
-    //Dot.prototype.sprite = Dot.prototype.crear();
     Dot.prototype.sprite = Dot.createSprite(Dot.SIZE, Dot.COLOUR);
 });
 /*
@@ -2720,7 +2694,7 @@ function respawn(starting) {
         wait(2, function () {
             lifeDisplay.setLives(lives - 1);
             removeObject('playerOneText');
-            start();
+            respawn();
         });
         resources.playSound('intro');
     } else {
@@ -2735,7 +2709,6 @@ function levelUp(starting) {
 
     insertObject('dots', new DotGroup());
     insertObject('dotCounter', new DotCounter(level));
-    insertObject('bonusDisplay', new BonusDisplay(level));
 
     respawn(starting);
 }
@@ -2777,16 +2750,7 @@ function processDotCollisions(pacman, dots) {
 }
 
 function processBonusCollision(pacman, bonus) {
-    if (bonus && bonus.colliding(pacman)) {
-        debug('bonus eaten');
-        removeObject('bonus');
-        //addPoints(bonus.value);
-        var bonusScore = new InlineScore(bonus.value, '#FBD', bonus.cx, bonus.cy);
-        insertObject('bonusScore', bonusScore);
-        bonusScore.delayEvent(toTicks(1), function () {
-            removeObject('bonusScore');
-        });
-    }
+    
 }
 
 function killPacman() {
@@ -2844,7 +2808,6 @@ function lifeLost() {
         debug('starting level %s', level);
         insertObject('dots', new DotGroup());
         insertObject('dotCounter', new DotCounter(level));
-        insertObject('bonusDisplay', new BonusDisplay(level));
 
         respawn(true);
     }
@@ -2865,7 +2828,6 @@ function update() {
     var pacman = getObject('pacman');
     if (mode === MODE_RUNNING) {
         processDotCollisions(pacman, getObject('dots'));
-        processBonusCollision(pacman, getObject('bonus'));
         processGhostCollisions(pacman, Ghost.all());
         var waitingGhost = getObject('dotCounter').waitingGhost();
         if (waitingGhost) {

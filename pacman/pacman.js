@@ -925,27 +925,16 @@ function Header() {
         size: TILE_SIZE
     };
     this.set('1up', new Text(merge(props, {
-        txt: '1UP',
+        txt: '',
         x: 4 * TILE_SIZE,
         y: 0
     })));
     this.add(new Text(merge(props, {
         txt: 'AHORA Buenos Aires',
-        x: 9 * TILE_SIZE,
-        y: 0
+        x: 6 * TILE_SIZE,
+        y: 20
     })));
-    this.set('score', new Text(merge(props, {
-        txt: score,
-        align: 'right',
-        x: 7 * TILE_SIZE,
-        y: TILE_SIZE
-    })));
-    this.set('highscore', new Text(merge(props, {
-        txt: highscore,
-        align: 'right',
-        x: 17 * TILE_SIZE,
-        y: TILE_SIZE
-    })));
+    
 }
 
 Header.prototype = new Group({
@@ -1386,7 +1375,7 @@ Ghost.FRIGHT_FLASHES = [null, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 3, 3, 5, 3, 3, 0,
 
 Ghost.ANIM_FREQ = UPDATE_HZ / 10;
 Ghost.SPRITES = {};
-Ghost.SIZE = 28;
+Ghost.SIZE = 42;
 
 enqueueInitialiser(function () {
     var w = Ghost.SIZE,
@@ -2254,19 +2243,48 @@ function Dot(props) {
     this.h = Dot.SIZE;
 }
 
-Dot.SIZE = TILE_SIZE * 0.25;
+Dot.SIZE = TILE_SIZE * 1.5;
 Dot.COLOUR = '#FCC';
 
 Dot.createSprite = function (size, colour) {
+
+    /*var sprite = new GraphicsBuffer(size, size);
+    var g = sprite.getContext('2d');
+    g.arc(100,100, 50, 0, Math.PI*2,true); // you can use any shape
+    g.clip();
+
+    var img = new Image();
+    img.addEventListener('load', function(e) {
+        ctx.drawImage(this, 0, 0, 200, 300);
+        //ctx.fill();
+    //ctx.stroke();
+    }, true);
+    img.src="/path/to/image.jpg";*/
+    
+
+    
+
     var sprite = new GraphicsBuffer(size, size);
     var g = sprite.getContext('2d');
     g.beginPath();
     var r = size / 2;
     g.arc(r, r, r, 0, Math.PI * 2, true);
-    g.fillStyle = colour;
-    g.fill();
-
+    
+    var spritesheet=new Image();
+    spritesheet.src = 'pacman/res/llave.png'; 
+    spritesheet.onload = function(){
+        var pattern = g.createPattern(this, "no-repeat");
+        g.fillStyle = pattern;
+        console.log('fsd');
+        g.fill();
+        
+    };
+    setTimeout(function(){}, 3000);
     return sprite;
+    /*spritesheet.src="pacman/res/llave.png"
+    var pat=ctx.createPattern(spritesheet,"repeat");
+    g.fillStyle = pat;
+    g.fill();*/
 };
 
 
@@ -2296,8 +2314,8 @@ Dot.prototype = new Sprite({
 });
 
 enqueueInitialiser(function () {
-    Dot.prototype.sprite = Dot.prototype.crear();
-    //Dot.prototype.sprite = Dot.createSprite(Dot.SIZE, Dot.COLOUR);
+    //Dot.prototype.sprite = Dot.prototype.crear();
+    Dot.prototype.sprite = Dot.createSprite(Dot.SIZE, Dot.COLOUR);
 });
 /*
  * A flashing dot that bestows ghost-eating powers.
@@ -2723,9 +2741,9 @@ function levelUp(starting) {
 }
 
 function addPoints(points) {
-    score += points;
+    /*score += points;
     highscore = Math.max(score, highscore);
-    getObject('header').updateScore(score, highscore);
+    getObject('header').updateScore(score, highscore);*/
 }
 
 // Removes all entities that will be replaced on respawn.
@@ -2751,7 +2769,7 @@ function processDotCollisions(pacman, dots) {
             broadcast('onEnergiserEaten', [dot]);
         }
         resources.playSound('tick' + Math.floor(Math.random() * 4));
-        addPoints(dot.value);
+        //addPoints(dot.value);
         if (dots.isEmpty()) {
             wait(1, levelComplete);
         }
@@ -2762,7 +2780,7 @@ function processBonusCollision(pacman, bonus) {
     if (bonus && bonus.colliding(pacman)) {
         debug('bonus eaten');
         removeObject('bonus');
-        addPoints(bonus.value);
+        //addPoints(bonus.value);
         var bonusScore = new InlineScore(bonus.value, '#FBD', bonus.cx, bonus.cy);
         insertObject('bonusScore', bonusScore);
         bonusScore.delayEvent(toTicks(1), function () {
@@ -2789,7 +2807,7 @@ function killGhosts(pacman, deadGhosts) {
         scoreValue = Ghost.calcGhostScore(nFrightened--);
         scoreCx = g.cx;
         scoreCy = g.cy;
-        addPoints(scoreValue);
+        //addPoints(scoreValue);
     });
     insertObject('ghostScore', new InlineScore(scoreValue, 'cyan', scoreCx, scoreCy));
     wait(0.5, function () {

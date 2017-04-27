@@ -2678,7 +2678,7 @@ function respawn(starting) {
             x: 4 * TILE_SIZE,
             y: 14 * TILE_SIZE
         });
-        wait(2, function () {
+        wait(3, function () {
             lifeDisplay.setLives(lives - 1);
             removeObject('playerOneText');
             respawn();

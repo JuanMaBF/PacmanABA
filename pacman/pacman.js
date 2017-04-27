@@ -931,7 +931,7 @@ function Header() {
     })));
     this.add(new Text(merge(props, {
         txt: 'AHORA Buenos Aires',
-        x: 6 * TILE_SIZE,
+        x: 5.1 * TILE_SIZE,
         y: 20
     })));
     
@@ -2160,14 +2160,6 @@ function Bonus(symbol, value) {
     this.value = value;
 }
 
-function imagenCrear() {
-    var sprite = new GraphicsBuffer(10, 10);
-    var g = sprite.getContext('2d');
-    var spritesheet=new Image();
-    spritesheet.src="pacman/res/logo-aba.png"
-    //ctx.drawImage(spritesheet,10,10);
-    return spritesheet;
-};
 
 Bonus.prototype = new Sprite({
 
@@ -2175,11 +2167,6 @@ Bonus.prototype = new Sprite({
         
 
         g.save();
-        var spritesheet=new Image();
-        spritesheet.src="pacman/res/logo-aba.png"
-        var pat=ctx.createPattern(spritesheet,"repeat");
-        g.fillStyle = pat;
-        g.fillRect(this.x, this.y, this.w, this.h);
         g.restore();
     },
 

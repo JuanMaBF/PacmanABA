@@ -2230,7 +2230,7 @@ function Dot(props) {
     this.h = Dot.SIZE;
 }
 
-Dot.SIZE = TILE_SIZE * 1.5;
+Dot.SIZE = TILE_SIZE * 0.45;
 Dot.COLOUR = '#FCC';
 
 Dot.createSprite = function (size, colour) {
@@ -2240,15 +2240,8 @@ Dot.createSprite = function (size, colour) {
     g.beginPath();
     var r = size / 2;
     g.arc(r, r, r, 0, Math.PI * 2, true);
-    
-    var spritesheet=new Image();
-    spritesheet.src = 'pacman/res/llave.png'; 
-    spritesheet.onload = function(){
-        var pattern = g.createPattern(this, "no-repeat");
-        g.fillStyle = pattern;
-        g.fill();
-        
-    };
+    g.fillStyle = colour;
+    g.fill();
     return sprite;
 };
 
@@ -2310,7 +2303,7 @@ function imagenCrear() {
     var sprite = new GraphicsBuffer(10, 10);
     var g = sprite.getContext('2d');
     var spritesheet=new Image();
-    spritesheet.src="pacman/res/logo-aba.png"
+    spritesheet.src="pacman/res/llave.png"
     //ctx.drawImage(spritesheet,10,10);
     return spritesheet;
 };
@@ -2924,7 +2917,11 @@ function initKeyBindings() {
     directions[keys.right] = EAST;
     directions[keys.left] = WEST;
 
-    $(window).keydown(function (e) {
+    $(window).keydown(function (e){
+        funkeydown (e);
+    });
+
+    function funkeydown (e) {
         var k = getKeyCode(e);
         if (!k) {
             return;
@@ -2955,15 +2952,179 @@ function initKeyBindings() {
         default:
             throw new Error('unhandled: ' + keycodes[k]);
         }
+    }
+
+    $(window).keyup(function (e){
+        funkeyup(e);
     });
 
-    $(window).keyup(function (e) {
+    function funkeyup(e) {
         var pacman = getObject('pacman');
         var k = getKeyCode(e);
         if (pacman && pacman.turning === directions[k]) {
             pacman.turning = null;
         }
-    });
+    }
+
+    $('#pacman-button-der').click(function(){
+            //keyup
+           var pacman = getObject('pacman');
+            var k = 39;
+            if (pacman && pacman.turning === directions[k]) {
+                pacman.turning = null;
+            }
+            //keydown
+            if (!k) {
+                return;
+            }
+
+            switch (k) {
+            case keys.left:
+            case keys.right:
+            case keys.up:
+            case keys.down:
+                var pacman = getObject('pacman');
+                if (pacman) {
+                    pacman.turning = directions[k];
+                }
+                break;
+            case keys.togglePause:
+                togglePause();
+                break;
+            case keys.newGame:
+                newGame();
+                break;
+            case keys.kill:
+                window.clearTimeout(timer);
+                break;
+            case keys.levelComplete:
+                levelComplete();
+                break;
+            default:
+                throw new Error('unhandled: ' + keycodes[k]);
+            }
+           //funkeyup(e)
+    })
+
+     $('#pacman-button-izq').click(function(){
+            //keyup
+           var pacman = getObject('pacman');
+            var k = 37;
+            if (pacman && pacman.turning === directions[k]) {
+                pacman.turning = null;
+            }
+            //keydown
+            if (!k) {
+                return;
+            }
+
+            switch (k) {
+            case keys.left:
+            case keys.right:
+            case keys.up:
+            case keys.down:
+                var pacman = getObject('pacman');
+                if (pacman) {
+                    pacman.turning = directions[k];
+                }
+                break;
+            case keys.togglePause:
+                togglePause();
+                break;
+            case keys.newGame:
+                newGame();
+                break;
+            case keys.kill:
+                window.clearTimeout(timer);
+                break;
+            case keys.levelComplete:
+                levelComplete();
+                break;
+            default:
+                throw new Error('unhandled: ' + keycodes[k]);
+            }
+           //funkeyup(e)
+    })
+
+     $('#pacman-button-ar').click(function(){
+            //keyup
+           var pacman = getObject('pacman');
+            var k = 38;
+            if (pacman && pacman.turning === directions[k]) {
+                pacman.turning = null;
+            }
+            //keydown
+            if (!k) {
+                return;
+            }
+
+            switch (k) {
+            case keys.left:
+            case keys.right:
+            case keys.up:
+            case keys.down:
+                var pacman = getObject('pacman');
+                if (pacman) {
+                    pacman.turning = directions[k];
+                }
+                break;
+            case keys.togglePause:
+                togglePause();
+                break;
+            case keys.newGame:
+                newGame();
+                break;
+            case keys.kill:
+                window.clearTimeout(timer);
+                break;
+            case keys.levelComplete:
+                levelComplete();
+                break;
+            default:
+                throw new Error('unhandled: ' + keycodes[k]);
+            }
+           //funkeyup(e)
+    })
+
+     $('#pacman-button-ab').click(function(){
+            //keyup
+           var pacman = getObject('pacman');
+            var k = 40;
+            if (pacman && pacman.turning === directions[k]) {
+                pacman.turning = null;
+            }
+            //keydown
+            if (!k) {
+                return;
+            }
+
+            switch (k) {
+            case keys.left:
+            case keys.right:
+            case keys.up:
+            case keys.down:
+                var pacman = getObject('pacman');
+                if (pacman) {
+                    pacman.turning = directions[k];
+                }
+                break;
+            case keys.togglePause:
+                togglePause();
+                break;
+            case keys.newGame:
+                newGame();
+                break;
+            case keys.kill:
+                window.clearTimeout(timer);
+                break;
+            case keys.levelComplete:
+                levelComplete();
+                break;
+            default:
+                throw new Error('unhandled: ' + keycodes[k]);
+            }
+           //funkeyup(e)
+    })
 }
 
 $(function () {
@@ -3007,6 +3168,8 @@ $(function () {
             setPref('sound.enabled', this.checked);
         });
 
+        
+
         initialisers.forEach(function (f) {
             f();
         });
@@ -3034,4 +3197,6 @@ $(function () {
             throw new Error(msg);
         }
     });
+
 });
+

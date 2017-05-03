@@ -3,15 +3,44 @@
 
 .pacman-canvas {
     float: left;
-    border: 20px rgba(94,34,95,.85) solid;
+    border: rgba(94,34,95,.85) solid;
+    border-width: 7px;
     border-radius: 12px;
     background: #CCC;
-    margin-bottom: 3%;
     margin-left: 7%;
-    margin-top: -11%;
+    margin-top: -8%;
+    width: 40%;
+    height: 40%;
 }
 
 .pacman-img {
     margin-top: -3%;
     width: 40%;
+}
+
+@media (max-width: 500px){
+    .pacman-canvas{
+      width: 90%;
+      height: 90%;
+      margin-top: -40%;
+      margin-left: 4%;
+    }
+
+    .pacman-img {
+        margin-top: 5%;
+        width: 90%;
+    }
+
+    .pacman-button {
+        margin: 4px;
+        width: 40%;
+        height: 90%;
+    }
+    
+}
+
+@media (min-width: 500px){
+    .pacman-button {
+        visibility: hidden;
+    }
 }

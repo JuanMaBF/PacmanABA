@@ -2660,6 +2660,7 @@ function respawn(starting) {
         broadcast('onRespawn');
         wait(starting ? 2 : 1, function () {
             removeObject('readyText');
+            removeObject('secondMessage');
         });
         
     }
@@ -2681,6 +2682,10 @@ function respawn(starting) {
         start();
     }
 }
+
+
+
+    
 
 function levelUp(starting) {
     resources.killSounds();
@@ -2705,7 +2710,26 @@ function removeTransientEntities() {
      'ghostScore', 'releaseTimer', 'modeSwitcher'].forEach(removeObject);
 }
 
+function insertStartupText(id, props) {
+        insertObject(id, new Text(merge(props, {
+            size: TILE_SIZE,
+            style: Text.STYLE_FIXED_WIDTH
+        })));
+}
+
 function levelComplete() {
+    insertStartupText('readyText', {
+        txt: 'PUDISTE ALQUILAR',
+        colour: 'yellow',
+        x: 6 * TILE_SIZE,
+        y: 16 * TILE_SIZE
+    });
+    insertStartupText('secondMessage', {
+        txt: 'EN LA CIUDAD',
+        colour: 'yellow',
+        x: 8 * TILE_SIZE,
+        y: 17 * TILE_SIZE
+    });
     removeTransientEntities();
     removeObject('dots');
     getObject('pacman').wait();

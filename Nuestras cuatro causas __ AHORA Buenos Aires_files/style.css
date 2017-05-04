@@ -14,8 +14,8 @@
 }
 
 .pacman-img {
-    margin-top: -3%;
-    width: 40%;
+    margin-top: -20%;
+    width: 15%;
 }
 
 @media (max-width: 500px){
@@ -42,5 +42,13 @@
 @media (min-width: 500px){
     .pacman-button {
         visibility: hidden;
+    }
+    #button-back-pacman{
+        margin-left: -20%;
+    }
+    .pacman-img {
+        margin-top: -20%;
+        margin-left: -20%;
+        width: 15%;
     }
 }

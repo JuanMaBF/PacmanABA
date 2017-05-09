@@ -2685,7 +2685,7 @@ function respawn(starting) {
 
 
 
-    
+var isFirstGame = true;    
 
 function levelUp(starting) {
     resources.killSounds();
@@ -2695,7 +2695,11 @@ function levelUp(starting) {
     insertObject('dots', new DotGroup());
     insertObject('dotCounter', new DotCounter(level));
 
-    respawn(starting);
+    if(isFirstGame){
+        togglePause();
+    }
+    respawn(!isFirstGame);
+    isFirstGame = false;
 }
 
 function addPoints(points) {
@@ -2961,18 +2965,6 @@ function initKeyBindings() {
                 pacman.turning = directions[k];
             }
             break;
-        case keys.togglePause:
-            togglePause();
-            break;
-        case keys.newGame:
-            newGame();
-            break;
-        case keys.kill:
-            window.clearTimeout(timer);
-            break;
-        case keys.levelComplete:
-            levelComplete();
-            break;
         default:
             throw new Error('unhandled: ' + keycodes[k]);
         }
@@ -2989,165 +2981,28 @@ function initKeyBindings() {
             pacman.turning = null;
         }
     }
-
-    $('#pacman-button-der').click(function(){
-            //keyup
-           var pacman = getObject('pacman');
-            var k = 39;
-            if (pacman && pacman.turning === directions[k]) {
-                pacman.turning = null;
-            }
-            //keydown
-            if (!k) {
-                return;
-            }
-
-            switch (k) {
-            case keys.left:
-            case keys.right:
-            case keys.up:
-            case keys.down:
-                var pacman = getObject('pacman');
-                if (pacman) {
-                    pacman.turning = directions[k];
-                }
-                break;
-            case keys.togglePause:
-                togglePause();
-                break;
-            case keys.newGame:
-                newGame();
-                break;
-            case keys.kill:
-                window.clearTimeout(timer);
-                break;
-            case keys.levelComplete:
-                levelComplete();
-                break;
-            default:
-                throw new Error('unhandled: ' + keycodes[k]);
-            }
-           //funkeyup(e)
+     
+    $('#pacman-button-izq').click(function(){turnDirection(37);});
+    $('#pacman-button-ar').click(function(){turnDirection(38);});
+    $('#pacman-button-der').click(function(){turnDirection(39);});
+    $('#pacman-button-ab').click(function(){turnDirection(40);});
+    function turnDirection (k){
+        var pacman = getObject('pacman');
+        if (pacman) {
+            pacman.turning = directions[k];
+        }
+    }
+    $('#pacman-button-start').click(function(){
+        togglePause();
+        $("#pacman-canvas").css("opacity", "1");
+        $("#pacman-start").css("visibility", "hidden");
+        $("#pacman-button-start").css("visibility", "hidden");
+        respawn(true);
     })
 
-     $('#pacman-button-izq').click(function(){
-            //keyup
-           var pacman = getObject('pacman');
-            var k = 37;
-            if (pacman && pacman.turning === directions[k]) {
-                pacman.turning = null;
-            }
-            //keydown
-            if (!k) {
-                return;
-            }
-
-            switch (k) {
-            case keys.left:
-            case keys.right:
-            case keys.up:
-            case keys.down:
-                var pacman = getObject('pacman');
-                if (pacman) {
-                    pacman.turning = directions[k];
-                }
-                break;
-            case keys.togglePause:
-                togglePause();
-                break;
-            case keys.newGame:
-                newGame();
-                break;
-            case keys.kill:
-                window.clearTimeout(timer);
-                break;
-            case keys.levelComplete:
-                levelComplete();
-                break;
-            default:
-                throw new Error('unhandled: ' + keycodes[k]);
-            }
-           //funkeyup(e)
-    })
-
-     $('#pacman-button-ar').click(function(){
-            //keyup
-           var pacman = getObject('pacman');
-            var k = 38;
-            if (pacman && pacman.turning === directions[k]) {
-                pacman.turning = null;
-            }
-            //keydown
-            if (!k) {
-                return;
-            }
-
-            switch (k) {
-            case keys.left:
-            case keys.right:
-            case keys.up:
-            case keys.down:
-                var pacman = getObject('pacman');
-                if (pacman) {
-                    pacman.turning = directions[k];
-                }
-                break;
-            case keys.togglePause:
-                togglePause();
-                break;
-            case keys.newGame:
-                newGame();
-                break;
-            case keys.kill:
-                window.clearTimeout(timer);
-                break;
-            case keys.levelComplete:
-                levelComplete();
-                break;
-            default:
-                throw new Error('unhandled: ' + keycodes[k]);
-            }
-           //funkeyup(e)
-    })
-
-     $('#pacman-button-ab').click(function(){
-            //keyup
-           var pacman = getObject('pacman');
-            var k = 40;
-            if (pacman && pacman.turning === directions[k]) {
-                pacman.turning = null;
-            }
-            //keydown
-            if (!k) {
-                return;
-            }
-
-            switch (k) {
-            case keys.left:
-            case keys.right:
-            case keys.up:
-            case keys.down:
-                var pacman = getObject('pacman');
-                if (pacman) {
-                    pacman.turning = directions[k];
-                }
-                break;
-            case keys.togglePause:
-                togglePause();
-                break;
-            case keys.newGame:
-                newGame();
-                break;
-            case keys.kill:
-                window.clearTimeout(timer);
-                break;
-            case keys.levelComplete:
-                levelComplete();
-                break;
-            default:
-                throw new Error('unhandled: ' + keycodes[k]);
-            }
-           //funkeyup(e)
+    $('body').keydown(function(e){
+        if(e.which == 13)
+            $('#pacman-button-start').trigger('click');
     })
 }
 

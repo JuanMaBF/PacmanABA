@@ -1026,7 +1026,8 @@ var FontLoader = {
 
         $('head').append(
             $(document.createElement('script')).attr(
-                'src', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'));
+                'src', 'http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'));
+                //'src', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js'));
     }
 };
 /*

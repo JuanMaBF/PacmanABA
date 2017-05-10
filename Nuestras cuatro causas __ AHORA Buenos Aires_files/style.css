@@ -22,7 +22,7 @@
 }
 
 #pacman-button-start{
-    margin-left: -90%;
+    margin-left: -95%;
     margin-bottom: -40%;
     font-family: "Press Start 2P";
     color: #FFF;
@@ -37,7 +37,6 @@
 }
 
 @keyframes blinker {  
-  /*50% { background-color: #5E225F; }*/
   0% { color: #FFF; }
   50% { color: #8EBF44; } 
   100% { color: #FFF; }

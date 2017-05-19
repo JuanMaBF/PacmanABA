@@ -2983,27 +2983,48 @@ function initKeyBindings() {
         }
     }
      
-    $('#pacman-button-izq').click(function(){turnDirection(37);});
-    $('#pacman-button-ar').click(function(){turnDirection(38);});
-    $('#pacman-button-der').click(function(){turnDirection(39);});
-    $('#pacman-button-ab').click(function(){turnDirection(40);});
+    document.getElementById('pacman-button-izq').click(function(){turnDirection(37);});
+    document.getElementById('pacman-button-ar').click(function(){turnDirection(38);});
+    document.getElementById('pacman-button-der').click(function(){turnDirection(39);});
+    document.getElementById('pacman-button-ab').click(function(){turnDirection(40);});
     function turnDirection (k){
+        var keyboardEvent = document.getElementById('pacman-canvas').createEvent("KeyboardEvent");
+        var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+        keyboardEvent[initMethod](
+                   "keydown", 
+                    true, 
+                    true,
+                    window,
+                    false,
+                    false,
+                    false,
+                    false,
+                    k,
+                    0
+        );
+        document.getElementById('pacman-canvas').dispatchEvent(keyboardEvent);
+        funkeyup(keyboardEvent);
+    }
+
+    function funkeyup(e) {
         var pacman = getObject('pacman');
-        if (pacman) {
-            pacman.turning = directions[k];
+        var k = getKeyCode(e);
+        if (pacman && pacman.turning === directions[k]) {
+            pacman.turning = null;
         }
     }
-    $('#pacman-button-start').click(function(){
+
+    document.getElementById('pacman-button-start').click(function(){
         togglePause();
-        $("#pacman-canvas").css("opacity", "1");
-        $("#pacman-start").css("visibility", "hidden");
-        $("#pacman-button-start").css("visibility", "hidden");
+        $("#pacman-canvas")[0].css("opacity", "1");
+        $("#pacman-start")[0].css("visibility", "hidden");
+        $("#pacman-button-start")[0].css("visibility", "hidden");
         respawn(true);
     })
 
     $('body').keydown(function(e){
         if(e.which == 13)
-            $('#pacman-button-start').trigger('click');
+            $('#pacman-button-start')[0].trigger('click');
     })
 }
 

@@ -397,7 +397,7 @@ SoundManager.load = function (id, path, onLoad, onError) {
         }
     }, false);
     aud.addEventListener('error', function (e) {
-        onError(format('Error loading audio: %s', e.src));
+        location.reload();
     }, false);
     aud.src = format('%s/%s.ogg', path, id);
     aud.load();
@@ -574,7 +574,7 @@ ImageManager.load = function (id, path, onLoad, onError) {
         onLoad(img);
     };
     img.onerror = function () {
-        onError(format('Error loading image: %s', this.src));
+        location.reload();
     };
     img.src = format('%s/%s.png', path, id);
 };
@@ -674,7 +674,7 @@ ResourceManager.load = function (props) {
 
     function makeOnError(id) {
         return function (msg) {
-            resourceFailed('Unable to load resource: %s\n%s', id, msg);
+            location.reload();
         };
     }
 
@@ -688,7 +688,7 @@ ResourceManager.load = function (props) {
     // Loading fonts is different to loading other resources: objects aren't
     // returned and all fonts begin loading at the same time.
     function onFontError(family) {
-        resourceFailed('Unable to load font: %s', family);
+        location.reload();
     }
     FontLoader.load(base, fonts.stylesheet, fonts.families, resourceLoaded, onFontError);
 };
@@ -1020,7 +1020,7 @@ var FontLoader = {
             },
             fontinactive: function (family, _) {
                 //debug('inactive: %s', family);
-                onerror(family);
+                location.reload();
             }
         };
 
@@ -1599,7 +1599,7 @@ Ghost.prototype = new Actor({
             exits &= ~NORTH;
         }
         if (!exits) {
-            throw new Error(format('%s: no exits from [%s, %s]', this, col, row));
+            location.reload();
         }
         // check for single available exit
         if (exits === NORTH || exits === SOUTH || exits === WEST || exits === EAST) {
@@ -2983,27 +2983,16 @@ function initKeyBindings() {
         }
     }
      
-    document.getElementById('pacman-button-izq').click(function(){turnDirection(37);});
-    document.getElementById('pacman-button-ar').click(function(){turnDirection(38);});
-    document.getElementById('pacman-button-der').click(function(){turnDirection(39);});
-    document.getElementById('pacman-button-ab').click(function(){turnDirection(40);});
+    document.getElementById('pacman-button-izq').onclick = function(){turnDirection(37);};
+    document.getElementById('pacman-button-ar').onclick = function(){turnDirection(38);};
+    document.getElementById('pacman-button-der').onclick = function(){turnDirection(39);};
+    document.getElementById('pacman-button-ab').onclick = function(){turnDirection(40);};
     function turnDirection (k){
-        var keyboardEvent = document.getElementById('pacman-canvas').createEvent("KeyboardEvent");
-        var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-        keyboardEvent[initMethod](
-                   "keydown", 
-                    true, 
-                    true,
-                    window,
-                    false,
-                    false,
-                    false,
-                    false,
-                    k,
-                    0
-        );
-        document.getElementById('pacman-canvas').dispatchEvent(keyboardEvent);
-        funkeyup(keyboardEvent);
+        var pacman = getObject('pacman');
+        if (pacman) {
+            pacman.turning = directions[k];
+        }
+        //funkeyup(keyboardEvent);
     }
 
     function funkeyup(e) {
@@ -3014,17 +3003,17 @@ function initKeyBindings() {
         }
     }
 
-    document.getElementById('pacman-button-start').click(function(){
+    document.getElementById('pacman-button-start').onclick = function(){
         togglePause();
-        $("#pacman-canvas")[0].css("opacity", "1");
-        $("#pacman-start")[0].css("visibility", "hidden");
-        $("#pacman-button-start")[0].css("visibility", "hidden");
+        $("#pacman-canvas").css("opacity", "1");
+        $("#pacman-start").css("visibility", "hidden");
+        $("#pacman-button-start").css("visibility", "hidden");
         respawn(true);
-    })
+    }
 
     $('body').keydown(function(e){
         if(e.which == 13)
-            $('#pacman-button-start')[0].trigger('click');
+            $('#pacman-button-start').trigger('click');
     })
 }
 
@@ -3094,10 +3083,12 @@ $(function () {
             init();
         },
         onError: function (msg) {
-            alert(msg);
-            throw new Error(msg);
+            location.reload();
         }
     });
 
 });
 
+window.onload = function() {
+    document.getElementById('pacman-container').style.visibility = 'visible';
+};

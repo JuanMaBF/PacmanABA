@@ -410,20 +410,13 @@ SoundManager.prototype = {
             return;
         }
         var channels = this.sounds[id];
-        // find the first sound not playing
-        var sound = channels.first(function (s) {
+        var soundEl = channels.first(function (s) {
             return !s.playing;
         });
-
-        if (!sound) {
-            debug('can\'t play %s; skipping', id);
+        if (!soundEl) {
             return;
         }
-
-        sound.playing = true;
-        sound.addEventListener('ended', function () {
-            sound.playing = false;
-        }, false);
+        var sound = new Audio(soundEl.src);
         sound.play();
     },
 

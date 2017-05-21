@@ -3003,18 +3003,18 @@ function initKeyBindings() {
         }
     }
 
-    document.getElementById('pacman-button-start').onclick = function(){
-        togglePause();
-        $("#pacman-canvas").css("opacity", "1");
-        $("#pacman-start").css("visibility", "hidden");
-        $("#pacman-button-start").css("visibility", "hidden");
-        respawn(true);
-    }
-
-    $('body').keydown(function(e){
+    document.getElementsByTagName('body')[0].onkeydown = function(e){
         if(e.which == 13)
-            $('#pacman-button-start').trigger('click');
-    })
+            document.getElementById('pacman-button-start').click();
+    }
+}
+
+function onStartButtonPress(){
+    togglePause();
+    document.getElementById("pacman-canvas").style.opacity = 1;
+    document.getElementById("pacman-start").style.visibility = "hidden";
+    document.getElementById("pacman-button-start").style.visibility = "hidden";
+    respawn(true);
 }
 
 $(function () {
